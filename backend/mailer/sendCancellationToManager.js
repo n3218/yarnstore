@@ -1,25 +1,30 @@
-import nodemailer from "nodemailer"
-import asyncHandler from "express-async-handler"
-import dotenv from "dotenv"
-import { itemRowCompact, ifStorecredit, infoBlock } from "./mailComponents.js"
+import nodemailer from 'nodemailer';
+import asyncHandler from 'express-async-handler';
+import dotenv from 'dotenv';
+import { itemRowCompact, ifStorecredit, infoBlock } from './mailComponents.js';
 
-dotenv.config()
+dotenv.config();
 
 export const sendCancellationToManager = asyncHandler(async orderData => {
-  const order = new Object(orderData)
-  const MANAGER_EMAIL = String(process.env.MANAGER_EMAIL)
-  const OUGOING_ORDERS_EMAIL = String(process.env.OUGOING_ORDERS_EMAIL)
-  const OUGOING_ORDERS_PASSWORD = String(process.env.OUGOING_ORDERS_PASSWORD)
-
-  const DOMAIN_NAME = String(process.env.DOMAIN_NAME)
+  const order = new Object(orderData);
+  const DOMAIN_NAME = String(process.env.DOMAIN_NAME);
+  const MANAGER_EMAIL = String(process.env.MANAGER_EMAIL);
+  const OUGOING_ORDERS_EMAIL = process.env.OUGOING_ORDERS_EMAIL;
+  if (!OUGOING_ORDERS_EMAIL) {
+    throw new Error('Missing env: OUGOING_ORDERS_EMAIL');
+  }
+  const OUGOING_ORDERS_PASSWORD = process.env.OUGOING_ORDERS_PASSWORD;
+  if (!OUGOING_ORDERS_PASSWORD) {
+    throw new Error('Missing env: OUGOING_ORDERS_PASSWORD');
+  }
 
   const transporter = nodemailer.createTransport({
-    service: "gmail",
+    service: 'gmail',
     auth: {
       user: OUGOING_ORDERS_EMAIL,
       pass: OUGOING_ORDERS_PASSWORD
     }
-  })
+  });
 
   const mailOptions = {
     from: `#${order.orderId} Cancellation <${OUGOING_ORDERS_EMAIL}>`,
@@ -100,15 +105,15 @@ export const sendCancellationToManager = asyncHandler(async orderData => {
         </div>
       </div>
     </div>`
-  }
+  };
 
   await transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
-      console.log(error)
-      return error
+      console.log(error);
+      return error;
     } else {
-      console.log("Email to manager with new order sent... " + info.response)
-      return info.response
+      console.log('Email to manager with new order sent... ' + info.response);
+      return info.response;
     }
-  })
-})
+  });
+});

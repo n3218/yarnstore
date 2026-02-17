@@ -1,5 +1,5 @@
-import express from "express"
-const router = express.Router()
+import express from 'express';
+const router = express.Router();
 import {
   //
   createNewOrder,
@@ -11,34 +11,34 @@ import {
   cancelOrder,
   molliePay,
   mollieWebHook
-} from "../controllers/orderControllers.js"
-import { protect, admin } from "../middleware/authMiddleware.js"
+} from '../controllers/orderControllers.js';
+import { protect, admin } from '../middleware/authMiddleware.js';
 
 // "/api/orders"
 router //
-  .route("/")
+  .route('/')
   .post(protect, createNewOrder)
-  .get(protect, admin, getOrders)
+  .get(protect, admin, getOrders);
 router //
-  .route("/myorders")
-  .get(protect, getMyOrders)
+  .route('/myorders')
+  .get(protect, getMyOrders);
 router //
-  .route("/:id")
-  .get(protect, getOrderById)
+  .route('/:id')
+  .get(protect, getOrderById);
 router //
-  .route("/:id/pay")
-  .put(protect, updateOrderToPaid)
+  .route('/:id/pay')
+  .put(protect, updateOrderToPaid);
+// router //
+//   .route("/:id/molliepay")
+//   .put(protect, molliePay)
 router //
-  .route("/:id/molliepay")
-  .put(protect, molliePay)
+  .route('/:id/deliver')
+  .put(protect, updateOrderToDelivered);
 router //
-  .route("/:id/deliver")
-  .put(protect, updateOrderToDelivered)
-router //
-  .route("/:id/cancel")
-  .put(protect, admin, cancelOrder)
-router //
-  .route("/molliewebhook")
-  .post(mollieWebHook)
+  .route('/:id/cancel')
+  .put(protect, admin, cancelOrder);
+// router //
+//   .route("/molliewebhook")
+//   .post(mollieWebHook)
 
-export default router
+export default router;

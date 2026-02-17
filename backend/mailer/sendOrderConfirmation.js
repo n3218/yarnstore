@@ -1,30 +1,30 @@
-import nodemailer from "nodemailer"
-import asyncHandler from "express-async-handler"
-import dotenv from "dotenv"
-import { itemRow, ifStorecredit, infoBlock, userButtons, footer } from "./mailComponents.js"
+import nodemailer from 'nodemailer';
+import asyncHandler from 'express-async-handler';
+import dotenv from 'dotenv';
+import { itemRow, ifStorecredit, infoBlock, userButtons, footer } from './mailComponents.js';
 
-dotenv.config()
+dotenv.config();
 
 export const sendOrderConfirmation = asyncHandler(async orderData => {
-  const order = new Object(orderData)
-  const OUGOING_ORDERS_EMAIL = process.env.OUGOING_ORDERS_EMAIL
-  const OUGOING_ORDERS_PASSWORD = process.env.OUGOING_ORDERS_PASSWORD
-  const DOMAIN_NAME = String(process.env.DOMAIN_NAME)
+  const order = new Object(orderData);
+  const OUGOING_ORDERS_EMAIL = process.env.OUGOING_ORDERS_EMAIL;
+  const OUGOING_ORDERS_PASSWORD = process.env.OUGOING_ORDERS_PASSWORD;
+  const DOMAIN_NAME = String(process.env.DOMAIN_NAME);
 
-  const ORDERS_EMAIL = process.env.ORDERS_EMAIL
+  const ORDERS_EMAIL = process.env.ORDERS_EMAIL;
 
   const transporter = nodemailer.createTransport({
-    service: "gmail",
+    service: 'gmail',
     auth: {
       user: OUGOING_ORDERS_EMAIL,
       pass: OUGOING_ORDERS_PASSWORD
     }
-  })
+  });
 
   const mailOptions = {
     from: `YarnStore Order <${ORDERS_EMAIL}>`,
     to: `${order.user.email}`,
-    subject: `Order #${order.orderId} received!`,
+    subject: `Thank you for your order! #${order.orderId}`,
     html: `
     <div style="color: #373a3c; font-family: 'Source Sans Pro',Roboto,'Helvetica Neue',Arial,sans-serifs; font-weight: 300; background-color: #f7f7f7; padding: 20px;">
       <div style="max-width: 500px; margin: 0px auto; background-color: white; padding: 16px;">
@@ -84,15 +84,15 @@ export const sendOrderConfirmation = asyncHandler(async orderData => {
       </div>
     </div>
     ${footer}`
-  }
+  };
 
   await transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
-      console.log(error)
-      return error
+      console.log(error);
+      return error;
     } else {
-      console.log("Email with order confirmation sent... " + info.response)
-      return info.response
+      console.log('Email with order confirmation sent... ' + info.response);
+      return info.response;
     }
-  })
-})
+  });
+});

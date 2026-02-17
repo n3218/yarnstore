@@ -1,4 +1,4 @@
-const DOMAIN_NAME = String(process.env.DOMAIN_NAME)
+const DOMAIN_NAME = String(process.env.DOMAIN_NAME);
 
 export const itemRowCompact = item => {
   return `<tr style="border: 1px solid #9AABBD">
@@ -22,8 +22,8 @@ export const itemRowCompact = item => {
   <td style="text-align: center;">${item.meterage}</td>
   <td style="text-align: center;">€${item.price.toFixed(2)}</td>
   <td style="text-align: center;">€${((item.qty * item.price) / 100).toFixed(2)}</td>
-</tr>`
-}
+</tr>`;
+};
 
 // export const itemRow = item => {
 //   return `<tr style="border: 1px solid #9AABBD">
@@ -69,46 +69,46 @@ export const itemRow = item => {
         </a>
       </strong>
     </div>
-    <div><strong>${item.brand} ${item.name} ${item.color.replace(/_+/g, " ")}</strong></div>
+    <div><strong>${item.brand} ${item.name} ${item.color.replace(/_+/g, ' ')}</strong></div>
     <div>fibers: ${item.fibers}</div>
     <div>meterage: ${item.meterage}m/100g</div>
     <div>${item.qty}g x €${item.price.toFixed(2)}/100g = €${((item.qty * item.price) / 100).toFixed(2)}</div>
   </td>
-</tr>`
-}
+</tr>`;
+};
 
 export const badges = {
-  paid: "#3fb618",
-  green: "#3fb618",
-  expired: "#81869c",
-  canceled: "#a44a55",
-  COMPLETED: "#3fb618"
-}
+  paid: '#3fb618',
+  green: '#3fb618',
+  expired: '#81869c',
+  canceled: '#a44a55',
+  COMPLETED: '#3fb618'
+};
 
 export const ifStorecredit = storecredit => {
   if (storecredit) {
     return `<tr>
         <td style="text-align: right; font-size: 12px; font-weight: 300;">store credit used: </td>
         <td style="font-size: 12px; font-weight: 300;"> -€${storecredit.toFixed(2)}</td>
-      </tr>`
+      </tr>`;
   } else {
-    return ``
+    return ``;
   }
-}
+};
 
 const ifNotEmpty = (label, value) => {
   if (value) {
-    return `<tr><td style="text-align: right; font-size: 12px; font-weight: 300;">${label}: </td><td style="font-size: 12px; font-weight: 300;"> ${value}</td></tr>`
+    return `<tr><td style="text-align: right; font-size: 12px; font-weight: 300;">${label}: </td><td style="font-size: 12px; font-weight: 300;"> ${value}</td></tr>`;
   }
-}
+};
 
 const pickUp = (shippingPrice, operator) => {
   if (shippingPrice === 0) {
-    return `<div style="padding:5px 0px;" align="left"><div style="background-color:${badges["green"]}; padding: 5px 10px; color: white; font-size: 16px; text-transform:uppercase; display:inline-block">${operator}</div></div>`
+    return `<div style="padding:5px 0px;" align="left"><div style="background-color:${badges['green']}; padding: 5px 10px; color: white; font-size: 16px; text-transform:uppercase; display:inline-block">${operator}</div></div>`;
   } else {
-    return ``
+    return ``;
   }
-}
+};
 
 // export const infoBlock = order => {
 //   return `<hr style="border-top: 1px solid #e2e4e8;" />
@@ -166,8 +166,8 @@ export const infoBlock = order => {
         ${shippingDetails(order)}
       </div>
     </div>
-  <hr style="border-top: 1px solid #e2e4e8;" />`
-}
+  <hr style="border-top: 1px solid #e2e4e8;" />`;
+};
 
 export const shippingDetails = order => {
   return `
@@ -176,11 +176,11 @@ export const shippingDetails = order => {
       <table>
         <tbody>
           <tr><td style="text-align: right; font-size: 12px; font-weight: 300;">name: </td><td style="font-size: 12px; font-weight: 300;"> ${order.user.name}</td></tr>
-          ${order.shippingAddress.address && ifNotEmpty("address", order.shippingAddress.address)}
-          ${order.shippingAddress.city && ifNotEmpty("city", order.shippingAddress.city)}
-          ${order.shippingAddress.zipCode && ifNotEmpty("zipCode", order.shippingAddress.zipCode)}
-          ${order.shippingAddress.country && ifNotEmpty("country", order.shippingAddress.country)}
-          ${order.shippingAddress.phone && ifNotEmpty("phone", order.shippingAddress.phone)}
+          ${order.shippingAddress.address && ifNotEmpty('address', order.shippingAddress.address)}
+          ${order.shippingAddress.city && ifNotEmpty('city', order.shippingAddress.city)}
+          ${order.shippingAddress.zipCode && ifNotEmpty('zipCode', order.shippingAddress.zipCode)}
+          ${order.shippingAddress.country && ifNotEmpty('country', order.shippingAddress.country)}
+          ${order.shippingAddress.phone && ifNotEmpty('phone', order.shippingAddress.phone)}
           <tr>
             <td style="text-align: right; font-size: 12px; font-weight: 300;">email: </td>
             <td style="font-size: 12px; font-weight: 300; text-decoration:none; color:#417d97">
@@ -189,23 +189,23 @@ export const shippingDetails = order => {
               </a>
             </td>
           </tr>
-          ${ifNotEmpty("ship date", String(order.updatedAt).slice(0, 16))}
-          ${ifNotEmpty("shipped via", order.shippingAddress.shippingOption.operator)}
-          ${order.shippingAddress.shippingOption.shippingCode && ifNotEmpty("tracking#", order.shippingAddress.shippingOption.shippingCode)}
-          ${order.comment && ifNotEmpty("comment", order.comment)}
+          ${ifNotEmpty('ship date', String(order.updatedAt).slice(0, 16))}
+          ${ifNotEmpty('shipped by', order.shippingAddress.shippingOption.operator)}
+          ${order.shippingAddress.shippingOption.shippingCode && ifNotEmpty('tracking#', order.shippingAddress.shippingOption.shippingCode)}
+          ${order.comment && ifNotEmpty('comment', order.comment)}
         </tbody>
       </table>
     </div>
     ${pickUp(order.shippingPrice, order.shippingAddress.shippingOption.operator)}
-  `
-}
+  `;
+};
 
 export const footer = `
   <footer style="background-color:#81869c; color: #f0f3f7; padding:30px; font-size: 12px; font-weight: 300;" align="center">
     <div>Copyright © YarnStore 2021</div>
     <div><a href="mailto: YarnStore@google.com" style="text-decoration:none; color:#f0f3f7" target="_blank" rel="noreferrer">YarnStore@google.com</a></div>
   </footer>
-`
+`;
 
 export const userButtons = order => {
   return `
@@ -213,5 +213,5 @@ export const userButtons = order => {
       <div style="padding:10px 30px; margin: 10px 20px 0px 20px; text-align:center; background-color:#81869c"><a href="${DOMAIN_NAME}/orders/${order.id}" style="color:#f0f3f7; text-decoration:none; font-size: 12px; font-weight: 300;" target="_blank" rel="noreferrer">Go to your Order</a></div>
       <div style="padding:10px 30px; margin: 10px 20px 0px 20px; text-align:center; background-color:#56556e"><a href="${DOMAIN_NAME}/profile" style="color:#f0f3f7; text-decoration:none; font-size: 12px; font-weight: 300;" target="_blank" rel="noreferrer">Go to your Profile</a></div>
     </div>
-  `
-}
+  `;
+};
