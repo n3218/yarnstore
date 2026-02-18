@@ -3,8 +3,28 @@ import sharp from 'sharp';
 import Product from '../models/productModel.js';
 import bucket from '../config/bucket.js';
 import dotenv from 'dotenv';
+import crypto from 'crypto';
+import path from 'path';
 dotenv.config();
 
+const makeSafeFileName = originalname => {
+  const ext = path.extname(originalname).toLowerCase() || '.jpg';
+
+  let base = path
+    .basename(originalname, ext)
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+
+  if (!base) base = 'img';
+
+  // 🔥 обрезаем до 15 символов
+  base = base.slice(0, 15);
+
+  const random = crypto.randomBytes(3).toString('hex');
+
+  return `${Date.now()}-${base}-${random}${ext}`;
+};
 //
 //
 // upload single file to GCloud Bucket
@@ -12,7 +32,9 @@ dotenv.config();
 const blobAction = (size, fileData) => {
   return new Promise((resolve, reject) => {
     if (!fileData?.buffer) return reject(new Error(`No buffer for ${size}/${fileData?.originalname}`));
-    const blob = bucket.file(`${size}/${fileData.originalname}`);
+    // const blob = bucket.file(`${size}/${fileData.originalname}`);
+    const safeName = makeSafeFileName(fileData.originalname);
+    const blob = bucket.file(`${size}/${safeName}`);
 
     const blobStream = blob.createWriteStream({
       resumable: false,
